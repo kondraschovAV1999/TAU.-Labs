@@ -1,4 +1,4 @@
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 import control.matlab as matlab
 import numpy
 import math
@@ -8,39 +8,40 @@ import colorama as color
 def inputDigit(maxDigit, text):  # Функция для проверки правильности ввода чисел
     newAttempt = True
     while newAttempt:
-        inDigit = input(text)
+        inDigit = input(color.Fore.LIGHTCYAN_EX + text + color.Style.RESET_ALL)
         if inDigit.isdigit():
             outDigit = int(inDigit)
             if outDigit <= maxDigit:
                 newAttempt = False
             else:
-                print("Недопустимое числовое значение!")
+                print(color.Fore.RED + "Недопустимое числовое значение!" + color.Style.RESET_ALL)
         else:
-            print("Введено не число")
+            print(color.Fore.RED + "Введено не число!" + color.Style.RESET_ALL)
     return outDigit
 
 
-def graph(num, title, y, x):
-    pyplot.subplot(2, 1, num)
-    pyplot.grid(True)
-    if title == 'Переходная характеристика':
-        pyplot.plot(x, y, 'purple')
-    elif title == "Импусльная характеристика":
-        pyplot.plot(x, y, 'green')
-    pyplot.title(title)
-    pyplot.ylabel('Амплитуда')
-    pyplot.xlabel('Время ')
+def graph(title, y, x):
+    figure1 = plt.figure(figsize=(7, 4))
+    axes1 = figure1.add_subplot(1, 1, 1)
+    axes1.plot(x, y)
+    axes1.grid(True)
+    axes1.set_title(title)
+    axes1.set_xlabel('Время')
+    axes1.set_ylabel('Амплитуда')
 
 
-def checkLink(link):
+def action(link):
     timeLine = []
     for i in range(0, 10000):
         timeLine.append(i / 1000)
     [y, x] = matlab.step(link, timeLine)
-    graph(1, 'Переходная характеристика', y, x)
+    graph('Переходная характеристика', y, x)
     [y, x] = matlab.impulse(link, timeLine)
-    graph(2, "Импусльная характеристика", y, x)
-    pyplot.show()
+    graph("Импусльная характеристика", y, x)
+    mag, phase, omega = matlab.freqresp(link, timeLine)
+    graph("АЧХ", mag, timeLine)
+    graph("ФЧХ", phase * 180 / math.pi, timeLine)
+    plt.show()
 
 
 class Link:
@@ -73,5 +74,6 @@ class Link:
             self.tf = matlab.tf([self.k, 0], [self.t, 1])
 
 
-link1 = Link().tf
-checkLink(link1)
+link1 = Link()
+tf = link1.tf
+action(tf)
