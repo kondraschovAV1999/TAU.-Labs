@@ -24,7 +24,7 @@ def inputDigit(maxDigit, text):  # Функция для проверки пра
 def graph(title, y, x):  # Функция для построения отдельного графика
     figure1 = plt.figure(figsize=(7, 4))   # Создается объект класса Figure(по сути это холст, на котороым рисуем)
     axes1 = figure1.add_subplot(1, 1, 1)  # Создаем рабочую область на который будут оси (изображаем на холсте)
-    axes1.plot(x, y)  # Строится сам график уже внутри рабочей области
+    axes1.plot(x, y, "black")  # Строится сам график уже внутри рабочей области
     axes1.grid(True)  # Включение сетки
     axes1.set_title(title)  # Наименование графика
     axes1.set_xlabel('Время')   # Устанавливается подпись оси x
@@ -33,7 +33,7 @@ def graph(title, y, x):  # Функция для построения отдел
 
 def action(link):  # Функция для построения всех графиков
     timeLine = []  # Список точек по времени
-    for i in range(0, 10000):
+    for i in range(1, 10000):
         timeLine.append(i / 1000)
     [y, x] = matlab.step(link, timeLine)  # Получение переходной характеристики
     graph('Переходная характеристика', y, x)
@@ -65,11 +65,11 @@ class Link:  # Создаем класс "Звено"
         elif self.name == 3:
             self.k = inputDigit(10, "Введите k:\n")
             self.t = 1
-            self.tf = matlab.tf([self.k], [self.t, 0])
+            self.tf = matlab.tf([0, self.k], [self.t, 0])
         elif self.name == 4:
             self.k = inputDigit(10, "Введите k:\n")
-            self.t = 1
-            self.tf = matlab.tf([self.k, 0], [self.t])
+            self.t = 0.00000000001
+            self.tf = matlab.tf([self.k, 0], [self.t, 1])
         else:
             self.k = inputDigit(10, "Введите k:\n")
             self.t = inputDigit(10, "Введите T:\n")
@@ -78,4 +78,6 @@ class Link:  # Создаем класс "Звено"
 
 link1 = Link()  # Создается объект класса Link
 tf = link1.tf  # Получаем передаточную функцию
+print(color.Fore.LIGHTCYAN_EX + "Передаточная функция:" + color.Style.RESET_ALL)
+print(tf)
 action(tf)  # Построение всех графиков
