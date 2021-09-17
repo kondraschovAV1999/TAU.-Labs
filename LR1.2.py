@@ -68,7 +68,7 @@ class Link:  # Создаем класс "Звено"
             self.tf = matlab.tf([0, self.k], [self.t, 0])
         elif self.name == 4:
             self.k = inputDigit(10, "Введите k:\n")
-            self.t = 0.00000000001
+            self.t = 0.0000000000000001
             self.tf = matlab.tf([self.k, 0], [self.t, 1])
         else:
             self.k = inputDigit(10, "Введите k:\n")
