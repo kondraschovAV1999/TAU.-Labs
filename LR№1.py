@@ -13,7 +13,7 @@ def choice():  # Отвечает за выбор звена
         print(color.Style.RESET_ALL)
         userInput = input("Введите номер команды:\n"
                           "1 -" + inertialessUnitName + ";\n"
-                          "2 -" + aperiodicUnitName + ".\n")
+                                                        "2 -" + aperiodicUnitName + ".\n")
         if userInput.isdigit():
             needNewChoice = False
             userInput = int(userInput)
