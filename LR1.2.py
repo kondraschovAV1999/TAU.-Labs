@@ -65,7 +65,7 @@ class Link:  # Создаем класс "Звено"
             self.k = inputNumbers(10, "Введите k:\n")
             self.t = 1
             self.tf = matlab.tf([self.k], [self.t])
-            self.changeTf = matlab.tf([2 * self.k], [self.t / 2])
+            self.changeTf = matlab.tf([2 * self.k], [self.t])
         elif self.name == 2:
             self.k = inputNumbers(10, "Введите k:\n")
             self.t = inputNumbers(10, "Введите T:\n")
